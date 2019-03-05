@@ -7,7 +7,7 @@ import { WebhookManager } from './WebhookManager';
 import { LogManager } from './LogManager';
 
 export async function setup(
-  velcroContractAddress: string,
+  notusContractAddress: string,
   providerUrl: string,
   ipfsUrl: string,
   logManager: LogManager
@@ -20,7 +20,7 @@ export async function setup(
   const webhookListenerFactory = new WebhookListenerFactory(web3, logManager);
   const webhookManager = new WebhookManager(
     web3,
-    velcroContractAddress,
+    notusContractAddress,
     webhookSource,
     webhookListenerFactory
   );

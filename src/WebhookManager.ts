@@ -2,7 +2,7 @@ import { eventProjection } from './eventProjection';
 import { WebhookSource } from './WebhookSource';
 import { WebhookListener } from './WebhookListener'
 import { WebhookListenerFactory } from './WebhookListenerFactory';
-import velcroArtifact from 'velcro-contracts/build/contracts/Velcro.json'
+import notusArtifact from 'notus-contracts/build/contracts/Notus.json'
 import * as utils from 'web3-utils';
 
 export class WebhookManager {
@@ -101,6 +101,6 @@ export class WebhookManager {
   }
 
   getContract () {
-    return new this.web3.eth.Contract(velcroArtifact.abi, this.address)
+    return new this.web3.eth.Contract(notusArtifact.abi, this.address)
   }
 }

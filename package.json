@@ -1,5 +1,5 @@
 {
-  "name": "velcro-node",
+  "name": "notus-node",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -38,7 +38,7 @@
     "lodash": "^4.17.11",
     "node-fetch": "^2.3.0",
     "subscriptions-transport-ws": "^0.9.15",
-    "velcro-contracts": "^0.0.3",
+    "notus-contracts": "^0.0.3",
     "web3": "^1.0.0-beta.46",
     "web3-utils": "^1.0.0-beta.46"
   }

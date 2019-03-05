@@ -14,7 +14,7 @@ addons:
 env:
   global:
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
-    - IMAGE_NAME=ethvelcro/velcro-node
+    - IMAGE_NAME=notifyus/notus-node
 
 cache:
   directories:
@@ -81,5 +81,5 @@ jobs:
         - gcloud components install kubectl
         - gcloud container clusters get-credentials --zone=us-west1-a --project=monchu-210122 production
 
-        - envsubst < ./k8s/eth-velcro.yml > ./k8s/eth-velcro.yml.out.yml
-        - kubectl apply -f ./k8s/eth-velcro.yml.out.yml -n eth-velcro
+        - envsubst < ./k8s/notus.yml > ./k8s/notus.yml.out.yml
+        - kubectl apply -f ./k8s/notus.yml.out.yml -n notus

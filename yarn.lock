@@ -4011,6 +4011,11 @@ normalize-path@^2.0.1, normalize-path@^2.1.1:
   dependencies:
     remove-trailing-separator "^1.0.1"
 
+notus-contracts@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/notus-contracts/-/notus-contracts-0.0.3.tgz#ff20f3d28c55831da7acfa64077770c146a88739"
+  integrity sha512-OT//TMTtV4z88h5d0qWTV6rrWuLB7TK+Dh0HTOSDfiP0jXcxjQl9w71kqGSv1c5txLzLcwNLnc3jDi6JU8ZAMA==
+
 npm-bundled@^1.0.1:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/npm-bundled/-/npm-bundled-1.0.6.tgz#e7ba9aadcef962bb61248f91721cd932b3fe6bdd"
@@ -5847,11 +5852,6 @@ vary@^1, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
-
-velcro-contracts@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/velcro-contracts/-/velcro-contracts-0.0.3.tgz#3fd60cf994d4678092256a0d1c1322d303a5a344"
-  integrity sha512-HjavwG1c4xuwErzo5qN9dRc6zLoROUQ7pP8it59T/hixlFih8vV2CX8+02minNR4ggfnVFiKyrVBft7Brw56bw==
 
 verror@1.10.0:
   version "1.10.0"

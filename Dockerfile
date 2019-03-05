@@ -3,7 +3,7 @@ FROM node:10 as builder
 ENV PORT 3000
 EXPOSE ${PORT}
 
-WORKDIR /velcro-node
+WORKDIR /notus-node
 
 RUN npm install -g yarn
 

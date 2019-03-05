@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: eth-velcro
+  name: notus
 data:
   port: "3000"
   contract.address: "0xeb458b030d6be178e301910f7077955574bb7be4"
@@ -12,20 +12,20 @@ kind: Secret
 apiVersion: v1
 type: Opaque
 metadata:
-  name: eth-velcro
+  name: notus
 data:
   some.secret: "c3VwZXIgc2VjcmV0IHN0dWZmIHlvCg=="
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eth-velcro
+  name: notus
   labels:
-    app: eth-velcro
+    app: notus
 spec:
   selector:
     matchLabels:
-      app: eth-velcro
+      app: notus
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -34,10 +34,10 @@ spec:
   template:
     metadata:
       labels:
-        app: eth-velcro
+        app: notus
     spec:
       containers:
-      - name: eth-velcro
+      - name: notus
         image: ${IMAGE_NAME_COMMIT}
         readinessProbe:
           httpGet:
@@ -55,36 +55,36 @@ spec:
         - name: SOME_SECRET
           valueFrom:
             secretKeyRef:
-              name: eth-velcro
+              name: notus
               key: some.secret
         - name: PORT
           valueFrom:
             configMapKeyRef:
-              name: eth-velcro
+              name: notus
               key: port
         - name: CONTRACT_ADDRESS
           valueFrom:
             configMapKeyRef:
-              name: eth-velcro
+              name: notus
               key: contract.address
         - name: WS_URL
           valueFrom:
             configMapKeyRef:
-              name: eth-velcro
+              name: notus
               key: ws.url
         - name: IPFS_URL
           valueFrom:
             configMapKeyRef:
-              name: eth-velcro
+              name: notus
               key: ipfs.url
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: eth-velcro
+  name: notus
 spec:
   selector:
-    app: eth-velcro
+    app: notus
   type: NodePort
   ports:
   - protocol: TCP
@@ -94,15 +94,15 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: eth-velcro
+  name: notus
 spec:
   tls:
-    - secretName: ethvelcro-network-tls
+    - secretName: notifyus-network-tls
   rules:
-  - host: api.ethvelcro.network
+  - host: api.notifyus.network
     http:
       paths:
       - path: /
         backend:
-          serviceName: eth-velcro
+          serviceName: notus
           servicePort: 80
