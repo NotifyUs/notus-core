@@ -97,9 +97,9 @@ metadata:
   name: notus
 spec:
   tls:
-    - secretName: notifyus-network-tls
+    - secretName: notus-network-tls
   rules:
-  - host: api.notifyus.network
+  - host: api.notus.network
     http:
       paths:
       - path: /
