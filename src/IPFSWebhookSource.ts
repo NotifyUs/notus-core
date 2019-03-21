@@ -1,8 +1,9 @@
 import { Webhook } from './types';
 import { WebhookListener } from './WebhookListener';
 import { validator } from './validator';
+import { IWebhookSource } from './IWebhookSource';
 
-export class WebhookSource {
+export class IPFSWebhookSource implements IWebhookSource {
   private _ipfs: any;
 
   constructor (ipfs: any) {

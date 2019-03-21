@@ -2,7 +2,7 @@ import express from "express";
 import enableWs from "express-ws";
 
 import { LogManager } from "./LogManager";
-import { WebhookManager } from "./WebhookManager";
+import { WebhookContractManager } from "./WebhookContractManager";
 import { setup } from './setup';
 
 const { PORT } = process.env;

@@ -1,10 +1,11 @@
+import { WebhookContractManager } from '../WebhookContractManager'
+import { IPFSWebhookSource } from '../IPFSWebhookSource'
 import { WebhookManager } from '../WebhookManager'
-import { WebhookSource } from '../WebhookSource'
 import * as utils from 'web3-utils'
 
 jest.mock('../eventProjection')
 
-describe('WebhookManager', () => {
+describe('WebhookContractManager', () => {
   let web3,
       subscribe,
       get,
@@ -35,13 +36,13 @@ describe('WebhookManager', () => {
         Contract
       }
     }
-    let webhookSource = new WebhookSource('ipfs')
+    let webhookSource = new IPFSWebhookSource('ipfs')
     webhookSource.get = get
     webhookListenerFactory = {
       create: jest.fn(() => 'webhookListener')
     }
-    manager = new WebhookManager(
-      web3, '0x1234', webhookSource, webhookListenerFactory
+    manager = new WebhookContractManager(
+      web3, '0x1234', webhookSource, new WebhookManager(webhookListenerFactory)
     )
   })
 

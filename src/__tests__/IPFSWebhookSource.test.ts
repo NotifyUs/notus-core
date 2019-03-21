@@ -1,6 +1,6 @@
-import { WebhookSource } from '../WebhookSource'
+import { IPFSWebhookSource } from '../IPFSWebhookSource'
 
-describe('WebhookSource', () => {
+describe('IPFSWebhookSource', () => {
   const validWebhook = {
     url: 'webhookUrl',
     query: {
@@ -18,7 +18,7 @@ describe('WebhookSource', () => {
     let ipfs = {
       get: jest.fn(() => [{ path: 'path', content: JSON.stringify(validWebhook) }])
     }
-    let webhookSource = new WebhookSource(ipfs)
+    let webhookSource = new IPFSWebhookSource(ipfs)
     var webhook = await webhookSource.get('ipfsHash')
     expect(webhook.url).toEqual('webhookUrl')
     expect(ipfs.get).toHaveBeenCalledWith('ipfsHash')
@@ -28,7 +28,7 @@ describe('WebhookSource', () => {
     let ipfs = {
       get: jest.fn(() => JSON.stringify(invalidWebhook))
     }
-    let webhookSource = new WebhookSource(ipfs)
+    let webhookSource = new IPFSWebhookSource(ipfs)
 
     let errorThrown = false
     try {

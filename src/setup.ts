@@ -1,9 +1,9 @@
 import Web3 from 'web3';
 import ipfsClient from 'ipfs-http-client';
 
-import { WebhookSource } from './WebhookSource';
+import { IPFSWebhookSource } from './IPFSWebhookSource';
 import { WebhookListenerFactory } from './WebhookListenerFactory';
-import { WebhookManager } from './WebhookManager';
+import { WebhookContractManager } from './WebhookContractManager';
 import { LogManager } from './LogManager';
 
 export async function setup(
@@ -16,9 +16,9 @@ export async function setup(
   const web3 = new Web3(new Web3.providers.WebsocketProvider(providerUrl));
   const ipfs = ipfsClient('ipfs.infura.io', '5001', { protocol: 'https'});
 
-  const webhookSource = new WebhookSource(ipfs);
+  const webhookSource = new IPFSWebhookSource(ipfs);
   const webhookListenerFactory = new WebhookListenerFactory(web3, logManager);
-  const webhookManager = new WebhookManager(
+  const webhookManager = new WebhookContractManager(
     web3,
     notusContractAddress,
     webhookSource,
