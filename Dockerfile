@@ -17,4 +17,4 @@ COPY ./src/webhook.schema.json ./lib
 
 ENV NODE_ENV production
 
-CMD ["node", "./lib/index.js"]
+CMD ["node", "./lib/server.js"]

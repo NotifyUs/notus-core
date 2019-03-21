@@ -18,11 +18,11 @@
   },
   "scripts": {
     "test": "jest --config=jest.config.js",
-    "test-watch": "yarn run test -- --watch",
+    "test-watch": "yarn run test --watch",
     "build": "tsc -p .",
     "watch": "tsc -w -p . & rollup -cw",
     "lint": "tslint 'src/**/*.ts'",
-    "dev": "ts-node -r dotenv/config ./src/index.ts"
+    "dev": "ts-node ./src/server.ts"
   },
   "dependencies": {
     "ajv": "^6.9.1",

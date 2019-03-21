@@ -1,0 +1,3 @@
+export PORT=3000
+export CONTRACT_ADDRESS=
+export WS_URL=wss://ropsten.infura.io/ws/v3/5e378f49a3994737940a897b2d95222b
