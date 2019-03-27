@@ -1,5 +1,5 @@
 import { Webhook } from './types';
 
 export interface IWebhookSource {
-  async get (ipfsHash): Promise<Webhook>;
+  get (ipfsHash): Promise<Webhook>;
 }

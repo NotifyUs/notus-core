@@ -2,7 +2,6 @@ import { TriggerListener } from './TriggerListener';
 import { SubscriptionListener } from './SubscriptionListener';
 import { ITriggerListener } from './ITriggerListener';
 import { ILogManager } from './ILogManager';
-import fetch from 'node-fetch';
 
 export class TriggerListenerFactory {
   private web3: any;
