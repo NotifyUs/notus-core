@@ -2,25 +2,25 @@ export interface Webhook {
   version: string;
   ipfsHash: string;
   url: string;
-  query: Query;
-  paramMapping: Array<QueryParamMapping>;
+  trigger: Trigger;
+  paramMapping: Array<ParamMapping>;
 }
 
-export interface QueryParamMapping {
+export interface ParamMapping {
   paramName: string,
   resultPath: string
 }
 
-export interface Query {
-  queryType: string;
+export interface Trigger {
+  triggerType: string;
 }
 
-export interface EventQuery extends Query {
+export interface EventTrigger extends Trigger {
   address: string;
   topics: String[];
 }
 
-export interface GraphQuery extends Query {
+export interface GraphTrigger extends Trigger {
   websocketUri: string,
   subscriptionQuery: string
 }

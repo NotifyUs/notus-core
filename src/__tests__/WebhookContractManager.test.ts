@@ -1,6 +1,9 @@
 import { WebhookContractManager } from '../WebhookContractManager'
 import { IPFSWebhookSource } from '../IPFSWebhookSource'
-import { WebhookManager } from '../WebhookManager'
+import { LogManager } from '../LogManager'
+import { TriggerManager } from '../TriggerManager'
+import { webhookFactory } from './support/webhookFactory'
+
 import * as utils from 'web3-utils'
 
 jest.mock('../eventProjection')
@@ -8,14 +11,18 @@ jest.mock('../eventProjection')
 describe('WebhookContractManager', () => {
   let web3,
       subscribe,
+      fetch,
       get,
       manager,
-      webhookListenerFactory,
+      triggerListenerFactory,
       contractAllEvents,
       allEventsSubscription,
       contractGetPastEvents
 
+  let triggerListener, webhook
+
   beforeEach(() => {
+    fetch = jest.fn()
     allEventsSubscription = {
       on: jest.fn()
     }
@@ -27,7 +34,8 @@ describe('WebhookContractManager', () => {
       },
       getPastEvents: contractGetPastEvents
     }))
-    get = jest.fn(() => Promise.resolve('webhook'))
+    webhook = webhookFactory()
+    get = jest.fn(() => Promise.resolve(webhook))
     web3 = {
       utils: {
         sha3: utils.sha3
@@ -37,12 +45,16 @@ describe('WebhookContractManager', () => {
       }
     }
     let webhookSource = new IPFSWebhookSource('ipfs')
+    let logManager = new LogManager()
+    triggerListener = {
+      start: jest.fn()
+    }
     webhookSource.get = get
-    webhookListenerFactory = {
-      create: jest.fn(() => 'webhookListener')
+    triggerListenerFactory = {
+      create: jest.fn(() => triggerListener)
     }
     manager = new WebhookContractManager(
-      web3, '0x1234', webhookSource, new WebhookManager(webhookListenerFactory)
+      web3, '0x1234', fetch, webhookSource, new TriggerManager(triggerListenerFactory), logManager
     )
   })
 
@@ -68,7 +80,7 @@ describe('WebhookContractManager', () => {
 
         expect(get).toHaveBeenCalledWith('asdf')
 
-        expect(webhookListenerFactory.create).toHaveBeenCalledWith('webhook')
+        expect(triggerListenerFactory.create).toHaveBeenCalledWith(webhook.ipfsHash, webhook.trigger)
       }
     )
   })

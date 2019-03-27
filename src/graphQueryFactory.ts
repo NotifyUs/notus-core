@@ -1,7 +1,7 @@
-import { GraphQuery } from './types'
+import { GraphTrigger } from './types'
 
-export const graphQueryFactory = ({ subscriptionQuery, websocketUri }: { subscriptionQuery: string, websocketUri: string }):GraphQuery => ({
-  queryType: "GraphQuery",
+export const graphQueryFactory = ({ subscriptionQuery, websocketUri }: { subscriptionQuery: string, websocketUri: string }):GraphTrigger => ({
+  triggerType: "GraphTrigger",
   subscriptionQuery,
   websocketUri,
 });

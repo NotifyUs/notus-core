@@ -1,11 +1,12 @@
-import { WebhookListener } from "../WebhookListener";
+import { TriggerListener } from "../TriggerListener";
 import { webhookFactory } from "./support/webhookFactory";
 import { LogManager } from '../LogManager'
 
-describe("WebhookListener", () => {
-  let subscription, fetch, web3, webhookListener, logManager;
+describe("TriggerListener", () => {
+  let subscription, fetch, web3, triggerListener, logManager, callback;
 
   beforeEach(() => {
+    callback = jest.fn()
     subscription = {
       on: jest.fn(),
       unsubscribe: jest.fn()
@@ -17,45 +18,41 @@ describe("WebhookListener", () => {
       },
     };
     logManager = new LogManager()
-    webhookListener = new WebhookListener(fetch, web3, logManager);
+    triggerListener = new TriggerListener(web3, logManager);
   });
 
   describe("start()", () => {
     it("should attach all of the listeners", () => {
       const webhook = webhookFactory();
-      webhookListener.start(webhook);
+      triggerListener.start(webhook.ipfsHash, webhook.trigger, callback);
       expect(subscription.on).toHaveBeenCalledWith("data", expect.anything());
       expect(subscription.on).toHaveBeenCalledWith("error", expect.anything());
     });
 
     it("should not start again if already started", () => {
-      webhookListener.start(webhookFactory());
+      let webhook = webhookFactory()
+      triggerListener.start(webhook.ipfsHash, webhook.trigger, callback);
       expect(() => {
-        webhookListener.start(webhookFactory());
+        triggerListener.start(webhook.ipfsHash, webhook.trigger, callback);
       }).toThrow();
     });
   });
 
   describe("stop()", () => {
     it('should stop a started subscription', () => {
-      webhookListener.stop();
-      webhookListener.start(webhookFactory());
-      webhookListener.stop();
+      const webhook = webhookFactory()
+      triggerListener.stop();
+      triggerListener.start(webhook.ipfsHash, webhook.trigger, callback);
+      triggerListener.stop();
       expect(subscription.unsubscribe).toHaveBeenCalledTimes(1)
     })
   });
 
   describe('onData', () => {
-    it('should call fetch', () => {
+    it('should call the callback', () => {
       const webhook = webhookFactory()
-      webhookListener.onData(webhook, { hello: 'test' })
-      expect(fetch).toHaveBeenCalledWith(webhook.url, {
-        method: 'POST',
-        body: JSON.stringify({
-          webhook,
-          result: { hello: 'test' }
-        })
-      })
+      triggerListener.onData('1234', webhook, callback, { hello: 'test' })
+      expect(callback).toHaveBeenCalledWith(null, { hello: 'test' })
     })
   })
 });

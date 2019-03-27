@@ -9,10 +9,10 @@
       "description": "The URL of the webhook to call",
       "type": "string"
     },
-    "query": {
+    "trigger": {
       "type": "object",
       "properties": {
-        "queryType": {
+        "triggerType": {
           "type": "string"
         },
         "address": {
@@ -31,7 +31,7 @@
           "type": "string"
         }
       },
-      "required": [ "queryType" ]
+      "required": [ "triggerType" ]
     },
     "paramMapping": {
       "description": "Array of optional mappings to remap object fields to url params",
@@ -49,5 +49,5 @@
       }
     }
   },
-  "required": [ "url", "query" ]
+  "required": [ "url", "trigger" ]
 }

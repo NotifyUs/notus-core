@@ -1,5 +1,5 @@
 import { Webhook } from './types';
-import { WebhookListener } from './WebhookListener';
+import { TriggerListener } from './TriggerListener';
 import { validator } from './validator';
 import { IWebhookSource } from './IWebhookSource';
 

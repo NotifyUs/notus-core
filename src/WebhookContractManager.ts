@@ -1,30 +1,25 @@
 import { eventProjection } from './eventProjection';
 import { Webhook } from './types';
 import { IPFSWebhookSource } from './IPFSWebhookSource';
-import { WebhookListener } from './WebhookListener'
-import { WebhookListenerFactory } from './WebhookListenerFactory';
-import { WebhookManager } from './WebhookManager';
+import { TriggerListener } from './TriggerListener'
+import { TriggerListenerFactory } from './TriggerListenerFactory';
+import { TriggerManager } from './TriggerManager';
+import { LogManager } from './LogManager';
+import { formatResult } from './formatResult'
 import notusArtifact from 'notus-contracts/build/contracts/Notus.json'
 import * as utils from 'web3-utils';
 
 export class WebhookContractManager {
-  private web3: any;
-  private webhookSource: IPFSWebhookSource;
-  private webhookManager: WebhookManager;
   private subscription: any;
-  private address: string;
 
   constructor (
-    web3: any,
-    address: string,
-    webhookSource: IPFSWebhookSource,
-    webhookManager: WebhookManager
-  ) {
-    this.web3 = web3;
-    this.address = address;
-    this.webhookSource = webhookSource;
-    this.webhookManager = webhookManager;
-  }
+    private readonly web3: any,
+    private readonly address: string,
+    private readonly fetch: Function,
+    private readonly webhookSource: IPFSWebhookSource,
+    private readonly triggerManager: TriggerManager,
+    private readonly logManager: LogManager
+  ) {}
 
   async start() {
     if (this.subscription) { return }
@@ -48,8 +43,7 @@ export class WebhookContractManager {
     const ipfsHashes = eventProjection(events);
 
     await Promise.all(Array.from(ipfsHashes).map(async (ipfsHash) => {
-      const webhook: Webhook = await this.webhookSource.get(ipfsHash)
-      this.webhookManager.add(ipfsHash, webhook);
+      this.registerWebhook(await this.webhookSource.get(ipfsHash))
     }));
   }
 
@@ -80,8 +74,8 @@ export class WebhookContractManager {
     const ipfsHash = utils.toUtf8(log.returnValues.ipfsHash);
     return this.webhookSource.get(ipfsHash)
       .then((webhook: Webhook) => {
+        this.registerWebhook(webhook)
         console.log(`Starting webhook ${ipfsHash}...`)
-        this.webhookManager.add(ipfsHash, webhook)
       })
       .catch(error => {
         console.log(`Error starting webhook ${ipfsHash}: ${error.message}`)
@@ -89,9 +83,27 @@ export class WebhookContractManager {
       });
   }
 
+  registerWebhook (webhook) {
+    const { ipfsHash, trigger, url } = webhook
+    const triggerListener = this.triggerManager.add(ipfsHash, trigger);
+    triggerListener.start(ipfsHash, trigger, (error, log) => {
+      let result = formatResult(webhook, log);
+      this.fetch(url, {
+        method: "POST",
+        body: JSON.stringify(result),
+      }).catch(error => {
+        this.logManager.pushLog(ipfsHash, {
+          type: "error",
+          message: error.message
+        });
+        console.error(error);
+      });
+    })
+  }
+
   onUnregistered(log) {
     const ipfsHash = utils.toUtf8(log.returnValues.ipfsHash);
-    this.webhookManager.remove(ipfsHash)
+    this.triggerManager.remove(ipfsHash)
   }
 
   getContract () {

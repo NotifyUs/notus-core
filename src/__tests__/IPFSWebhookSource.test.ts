@@ -3,8 +3,8 @@ import { IPFSWebhookSource } from '../IPFSWebhookSource'
 describe('IPFSWebhookSource', () => {
   const validWebhook = {
     url: 'webhookUrl',
-    query: {
-      queryType: 'EventQuery',
+    trigger: {
+      triggerType: 'EventTrigger',
       address: 'addy',
       topics: ['1']
     }

@@ -1,27 +1,21 @@
-import { IWebhookListener } from './IWebhookListener';
-import { Webhook, GraphQuery } from './types';
+import { ITriggerListener } from './ITriggerListener';
+import { Webhook, GraphTrigger } from './types';
 import { apolloClientFactory } from './apolloClientFactory';
 import gql from 'graphql-tag';
 import { LogManager } from './LogManager';
 import { getMainDefinition } from './getMainDefinition';
 import { formatResult } from './formatResult';
 
-export class SubscriptionListener implements IWebhookListener {
-  private fetch: Function;
-  private logManager: LogManager;
+export class SubscriptionListener implements ITriggerListener {
   private client: any;
   private queryObservable: any;
 
-  constructor (fetch: Function, logManager: LogManager) {
-    this.fetch = fetch;
-    this.logManager = logManager;
-  }
+  constructor (private readonly logManager: LogManager) {}
 
-  public start(webhook: Webhook) {
+  public start(id, graphTrigger: GraphTrigger, callback: (err: any, result: any) => void) {
     try {
-      const graphQuery = <GraphQuery> webhook.query
-      this.client = apolloClientFactory(graphQuery.websocketUri)
-      let query = gql(graphQuery.subscriptionQuery)
+      this.client = apolloClientFactory(graphTrigger.websocketUri)
+      let query = gql(graphTrigger.subscriptionQuery)
       const { kind, operation } = getMainDefinition(query);
       const isSubscription = kind === 'OperationDefinition' && operation === 'subscription';
       if (!isSubscription) {
@@ -36,30 +30,25 @@ export class SubscriptionListener implements IWebhookListener {
       })
 
       this.queryObservable.subscribe({
-        next: this.onNext.bind(this, webhook),
-        error: this.onError.bind(this, webhook)
+        next: this.onNext.bind(this, id, graphTrigger, callback),
+        error: this.onError.bind(this, id, graphTrigger, callback)
       })
     } catch (error) {
-      this.onError(webhook, error)
+      this.onError(id, graphTrigger, callback, error)
     }
   }
 
-  onNext(webhook, data) {
-    let result = formatResult(webhook, data);
-    this.fetch(webhook.url, {
-      method: "POST",
-      body: JSON.stringify(result),
-    }).catch(error => {
-      this.onError(webhook, error)
-    });
+  onNext(id, graphTrigger, callback, data) {
+    callback(null, data)
+    this.logManager.pushLog(id, data);
   }
 
-  onError(webhook, error) {
-    console.error(error)
-    this.logManager.pushLog(webhook.ipfsHash, {
-      type: 'error',
+  onError(id, graphTrigger, callback, error) {
+    callback(error, null)
+    this.logManager.pushLog(id, {
+      type: "error",
       message: error.message
-    })
+    });
   }
 
   public stop() {

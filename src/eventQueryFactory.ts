@@ -1,7 +1,7 @@
-import { EventQuery } from './types'
+import { EventTrigger } from './types'
 
-export const eventQueryFactory = ({ address, topics }: { address: string, topics: Array<string> }):EventQuery => ({
-  queryType: "EventQuery",
+export const eventQueryFactory = ({ address, topics }: { address: string, topics: Array<string> }):EventTrigger => ({
+  triggerType: "EventTrigger",
   address,
   topics,
 });

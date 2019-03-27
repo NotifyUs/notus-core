@@ -6,8 +6,8 @@ describe('validator', () => {
 
     expect(validate({
       url: 'I am a url',
-      query: {
-        queryType: 'EventQuery',
+      trigger: {
+        triggerType: 'EventTrigger',
         address: '0x1234',
         topics: []
       },
