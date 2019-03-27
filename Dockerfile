@@ -13,7 +13,7 @@ RUN yarn
 COPY . .
 RUN yarn build
 
-COPY ./src/webhook.schema.json ./lib
+COPY ./webhook.schema.json ./lib
 
 ENV NODE_ENV production
 

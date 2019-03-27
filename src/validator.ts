@@ -1,6 +1,6 @@
 import Ajv from 'ajv'
 import fs from 'fs'
-const _schema = require('./webhook.schema.json')
+const _schema = require('../webhook.schema.json')
 
 let _validator
 
