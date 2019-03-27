@@ -1,9 +1,11 @@
 {
   "name": "notus-core",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "license": "MIT",
+  "author": "Brendan Asselstine",
+  "description": "Library to manage Web3 event subscriptions",
   "devDependencies": {
     "@types/express": "^4.16.1",
     "@types/express-ws": "^3.0.0",
