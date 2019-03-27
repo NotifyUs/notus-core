@@ -1,14 +1,14 @@
 import { TriggerListener } from './TriggerListener';
 import { SubscriptionListener } from './SubscriptionListener';
 import { ITriggerListener } from './ITriggerListener';
-import { LogManager } from './LogManager';
+import { ILogManager } from './ILogManager';
 import fetch from 'node-fetch';
 
 export class TriggerListenerFactory {
   private web3: any;
-  private logManager: LogManager;
+  private logManager: ILogManager;
 
-  constructor(web3: any, logManager: LogManager) {
+  constructor(web3: any, logManager: ILogManager) {
     this.web3 = web3;
     this.logManager = logManager;
   }

@@ -2,7 +2,7 @@ import { ITriggerListener } from './ITriggerListener';
 import { Webhook, GraphTrigger } from './types';
 import { apolloClientFactory } from './apolloClientFactory';
 import gql from 'graphql-tag';
-import { LogManager } from './LogManager';
+import { ILogManager } from './ILogManager';
 import { getMainDefinition } from './getMainDefinition';
 import { formatResult } from './formatResult';
 
@@ -10,7 +10,7 @@ export class SubscriptionListener implements ITriggerListener {
   private client: any;
   private queryObservable: any;
 
-  constructor (private readonly logManager: LogManager) {}
+  constructor (private readonly logManager: ILogManager) {}
 
   public start(id, graphTrigger: GraphTrigger, callback: (err: any, result: any) => void) {
     try {

@@ -1,12 +1,12 @@
 import Web3 from "web3";
 import { EventTrigger, Trigger, QueryResult } from "./types";
-import { LogManager } from './LogManager'
+import { ILogManager } from './ILogManager'
 import { ITriggerListener } from './ITriggerListener'
 
 export class TriggerListener implements ITriggerListener {
   public subscription: any;
 
-  constructor (private readonly web3: any, private readonly logManager: LogManager) {}
+  constructor (private readonly web3: any, private readonly logManager: ILogManager) {}
 
   public start(id, trigger: Trigger, callback) {
     if (this.subscription) { throw new Error("we've already started"); }

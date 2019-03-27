@@ -7,30 +7,30 @@ export class LogManager {
     this.subscriptions = new Map();
   }
 
-  public subscribe(ipfsHash: string, ws: WebSocket) {
-    this.subscriptions[ipfsHash];
-    if (!this.subscriptions[ipfsHash]) {
-      this.subscriptions[ipfsHash] = [];
+  public subscribe(id: string, ws: WebSocket) {
+    this.subscriptions[id];
+    if (!this.subscriptions[id]) {
+      this.subscriptions[id] = [];
     }
 
-    this.subscriptions[ipfsHash].push(ws);
+    this.subscriptions[id].push(ws);
 
-    console.info(`Log subscription ${ipfsHash} added to. Current: ${this.subscriptions[ipfsHash].length}`);
+    console.info(`Log subscription ${id} added to. Current: ${this.subscriptions[id].length}`);
   }
 
-  public unsubscribe(ipfsHash: string, ws: WebSocket) {
-    if (!this.subscriptions[ipfsHash]) {
+  public unsubscribe(id: string, ws: WebSocket) {
+    if (!this.subscriptions[id]) {
       return;
     }
 
-    this.subscriptions[ipfsHash] = this.subscriptions[ipfsHash].filter((arrWs) => arrWs !== ws);
+    this.subscriptions[id] = this.subscriptions[id].filter((arrWs) => arrWs !== ws);
 
-    console.info(`Log subscription ${ipfsHash} removed from. Current: ${this.subscriptions[ipfsHash].length}`);
+    console.info(`Log subscription ${id} removed from. Current: ${this.subscriptions[id].length}`);
   }
 
-  public pushLog(ipfsHash: string, log: Object) {
-    console.log(`pushLog ${ipfsHash}`, log)
-    const wsArr = this.subscriptions[ipfsHash];
+  public pushLog(id: string, log: Object) {
+    console.log(`pushLog ${id}`, log)
+    const wsArr = this.subscriptions[id];
     if (!wsArr) {
       return;
     }
